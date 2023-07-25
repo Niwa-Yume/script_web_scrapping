@@ -42,9 +42,7 @@ for event in events:
     event_description = event.find("div", class_="description").get_text(strip=True)
 
     # Extraire la date de l'événement et la convertir en objet datetime
-    event_date_raw = event.find("h2", class_="small")
-    event_date = datetime.strptime(event_date_raw.get_text(strip=True), "%d.%m.%Y") if event_date_raw else None
-    
+    event_date = soup.h3.text
     # Ajouter les informations de l'événement à la liste des données
     data.append([event_title, event_date, event_location, event_lat, event_lon, event_description])
         
