@@ -28,7 +28,7 @@ events = soup.find_all("div", class_="evenement vevent")
 for event in events:
     
     # Extraire le titre de l'événement
-    event_title_tag = event.find("h4", class_="genre-titre")
+    event_title_tag = event.find("div", class_="titre") or event.find("span", class_="left")
     event_title = event_title_tag.get_text(strip=True) if event_title_tag else None
     
     # Extraire le lieu de l'événement et le convertir en coordonnées géographiques
@@ -42,11 +42,8 @@ for event in events:
     event_description = event.find("div", class_="description").get_text(strip=True)
 
     # Extraire la date de l'événement et la convertir en objet datetime
-    event_date_raw = event.find("span", class_="left").get_text(strip=True)
-    try:
-        event_date = datetime.strptime(event_date_raw, "%d.%m.%Y")
-    except ValueError:
-        event_date = None
+    event_date_raw = event.find("h2", class_="small")
+    event_date = datetime.strptime(event_date_raw.get_text(strip=True), "%d.%m.%Y") if event_date_raw else None
     
     # Ajouter les informations de l'événement à la liste des données
     data.append([event_title, event_date, event_location, event_lat, event_lon, event_description])
